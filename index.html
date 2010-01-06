@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Guwe Kate Juge Ape &raquo; Fungsi Terbilang in PHP</title>
+		<script type="text/javascript" >
+			var httpObject = createXmlHttpRequestObject();
+
+			function handleEnterPressed(e){
+				var charCode;
+				if (e && e.which){
+					charCode = e.which;
+				}else if (window.event) {
+					e = window.event;
+					charCode = e.keyCode;
+				}
+
+				if (charCode == 13){//if enter pressed
+					process();
+				}
+			}
+			function createXmlHttpRequestObject() {
+				var httpObject;
+
+				if (window.ActiveXObject){
+					try {
+						return new ActiveXObject("Microsoft.XMLHTTP");
+					}catch (e){
+						httpObject = false;
+					}
+				}else {
+					try {
+						 return new XMLHttpRequest();
+					} catch (e){
+						httpObject = false;
+					}
+				}
+
+				if (!httpObject) {
+					alert("Failed to create XMLHttpObject!");
+					return null;
+				}else
+					return httpObject;
+			}
+
+			function process() {
+				httpObject = createXmlHttpRequestObject();
+				if (httpObject != null){
+					if (httpObject.readyState == 4 || httpObject.readyState == 0){
+						number = parseFloat(encodeURIComponent(document.getElementById("number").value));
+
+						httpObject.open("GET", "guwekatejugeape.php?number=" + number, true);
+						httpObject.onreadystatechange = handleServerResponse;
+
+						httpObject.send(null);
+					}
+				}
+
+			}
+
+			function handleServerResponse() {
+				if (httpObject.readyState == 4){
+					if (httpObject.status == 200){
+						words = httpObject.responseText;
+						document.getElementById("response").innerHTML = words;
+					}else {
+						alert ("Cannot access server. Message = "+ httpObject.statusText);
+					}
+				}
+			}
+
+		</script>
+    </head>
+    <body>
+			Input the number and press Enter <input type="text" id="number" onkeypress="handleEnterPressed(event)" />
+		<div id="response" />
+    </body>
+</html>

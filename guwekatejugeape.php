@@ -1,6 +1,9 @@
-<?php 
+<?php
+
 $number = $_GET["number"];
-$real_number = $number;
+if (($number) === "NaN"){
+	exit("Simon said... number");
+}
 
 function get_num_name ($num) {
 	switch ($num){
@@ -35,7 +38,7 @@ $unit_name = array(
 	5=> 'ribu trilyun',
 	6=> 'juta trilyun',
 	7=> 'milyar trilyun',
-	8=> 'trilyun trilyun');//it's up to you
+	8=> 'trilyun trilyun');//whatever
 
 $words = "";
 
@@ -44,55 +47,59 @@ $packet = str_split($number, 3);
 
 //print_r($packet);
 
-foreach ($packet as $key=>$value){
+foreach ($packet as $unit=>$value){
 	$added_words = "";
 	
-	$ratusan = substr($value, 2, 1);
-	$puluhan = substr($value, 1, 1);
-	$satuan = substr($value, 0, 1);
-	
-	if ($satuan == 1 && $puluhan == 0 && $ratusan == 0 && $key == 1){
-		$words = "seribu $words";
+	$hundreds = substr($value, 2, 1);
+	$tens = substr($value, 1, 1);
+	$ones = substr($value, 0, 1);
+
+	//special cases
+	if ($ones == 1 && $tens == 0 && $hundreds == 0 && $unit == 1){
+		$words = "seribu $words ";
+		continue;
+	}else if ($ones == 0 && $tens == 0 && $hundreds == 0){
 		continue;
 	}
 	//ratusan
-	if ($ratusan == 1){
+	if ($hundreds == 1){
 		$added_words = "seratus ";
-	}else if ($ratusan > 1){
-		$added_words = get_num_name($ratusan)." ratus ";
+	}else if ($hundreds > 1){
+		$added_words = get_num_name($hundreds)." ratus ";
 	}
 	//echo "<br />ratusan = $ratusan";
 
 	//puluhan && satuan
-	$puluhan = substr($value, 1, 1);
-	if ($puluhan == 0){
-		if ($satuan >=1 ){
-			$added_words .= get_num_name($satuan);
+	$tens = substr($value, 1, 1);
+	if ($tens == 0){
+		if ($ones >=1 ){
+			$added_words .= get_num_name($ones);
 		}
-	} else if ($puluhan == 1){
-		if ($satuan == 0){
-			$added_words .= "sepuluh ";
-		}else if ($satuan == 1) {
-			$added_words .= "sebelas ";
+	} else if ($tens == 1){
+		if ($ones == 0){
+			$added_words .= "sepuluh";
+		}else if ($ones == 1) {
+			$added_words .= "sebelas";
 		}else {
-			$added_words .= get_num_name($satuan)." belas ";
+			$added_words .= get_num_name($ones)." belas";
 		}
 	}else {
-		$added_words .= get_num_name($puluhan)." puluh ";
-		if ($satuan != 0)
-			$added_words .= get_num_name($satuan);
+		$added_words .= get_num_name($tens)." puluh ";
+		if ($ones != 0)
+			$added_words .= get_num_name($ones);
 	}
 
-	//echo "<br />puluhan dan satuan = $puluhan, $satuan<br />";
-	//echo "added words $added_words<br />";
-	//depend on $keys
-	$words = (($added_words == '')?'':$added_words." ".$unit_name[$key])." ".$words." ";
+	//depend on $unit
+	$words = $added_words." ".$unit_name[$unit]." ".$words." ";
 
 }
 
-$real_number = str_split(strrev($real_number), 3);
-foreach ($real_number as $value)
-	$real =strrev(".".$value).$real;
-echo "$real in words = $words";
-	
+$number = str_split($number, 3);
+foreach ($number as $unit=>$value){
+	$real_number = strrev($value).$real_number;
+	if (!empty($number[$unit+1]))
+		$real_number = ".".$real_number;
+}
+echo "$real_number : <strong>$words</strong>";
+
 ?>
