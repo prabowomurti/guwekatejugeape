@@ -70,11 +70,8 @@ foreach ($packet as $unit=>$value){
 	//echo "<br />ratusan = $ratusan";
 
 	//puluhan && satuan
-	$tens = substr($value, 1, 1);
 	if ($tens == 0){
-		if ($ones >=1 ){
-			$added_words .= get_num_name($ones);
-		}
+		$added_words .= get_num_name($ones);
 	} else if ($tens == 1){
 		if ($ones == 0){
 			$added_words .= "sepuluh";
