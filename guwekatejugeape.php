@@ -55,7 +55,7 @@ foreach ($packet as $unit=>$value){
 	$ones = substr($value, 0, 1);
 
 	//special cases
-	if ($ones == 1 && $tens == 0 && $hundreds == 0 && $unit == 1){
+	if ($ones == 1 && $tens == 0 && $hundreds == 0 && ($unit == 1 || $unit == 5)){
 		$words = "seribu $words ";
 		continue;
 	}else if ($ones == 0 && $tens == 0 && $hundreds == 0){

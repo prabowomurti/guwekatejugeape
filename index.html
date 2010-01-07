@@ -2,10 +2,22 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Guwe Kate Juge Ape &raquo; Fungsi Terbilang in PHP</title>
+	<title>Guwe Kate Juge Ape &raquo; Fungsi Terbilang in PHP</title>
+	<style type="text/css" >
+		body {
+			font-size: 13px;
+			font-family: "Lucida Grande", Verdana, Sans-serif;
+		}
+		input {
+			-moz-border-radius: 5px;
+			border-style: solid;
+			border-width: 1px;
+			border-color: #666666;
+			margin: 1px;
+			padding: 3px;
+		}
+	</style>
 		<script type="text/javascript" >
-			var httpObject = createXmlHttpRequestObject();
-
 			function handleEnterPressed(e){
 				var charCode;
 				if (e && e.which){
@@ -70,14 +82,14 @@
 					}else {
 						alert ("Cannot access server. Message = "+ httpObject.statusText);
 					}
-				}
+					}
 			}
 
 		</script>
     </head>
     <body>
 	    Input the number and press Enter <input type="text" id="number" onkeypress="handleEnterPressed(event)" />
-	    <div id="loadingAnimation" style="display:none" ><img src="animation.gif" /></div>
+	    	<div id="loadingAnimation" style="display:none" ><img src="animation.gif" /></div>
 		<div id="response" />
     </body>
 </html>
