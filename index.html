@@ -16,6 +16,8 @@
 				}
 
 				if (charCode == 13){//if enter pressed
+					document.getElementById('loadingAnimation').style.display = 'block';
+					document.getElementById('response').style.display = 'none';
 					process();
 				}
 			}
@@ -63,6 +65,8 @@
 					if (httpObject.status == 200){
 						words = httpObject.responseText;
 						document.getElementById("response").innerHTML = words;
+						document.getElementById("response").style.display = "block";
+						document.getElementById("loadingAnimation").style.display = "none";
 					}else {
 						alert ("Cannot access server. Message = "+ httpObject.statusText);
 					}
@@ -72,7 +76,8 @@
 		</script>
     </head>
     <body>
-			Input the number and press Enter <input type="text" id="number" onkeypress="handleEnterPressed(event)" />
+	    Input the number and press Enter <input type="text" id="number" onkeypress="handleEnterPressed(event)" />
+	    <div id="loadingAnimation" style="display:none" ><img src="animation.gif" /></div>
 		<div id="response" />
     </body>
 </html>
