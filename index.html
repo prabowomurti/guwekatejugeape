@@ -61,6 +61,7 @@
 				httpObject = createXmlHttpRequestObject();
 				if (httpObject != null){
 					if (httpObject.readyState == 4 || httpObject.readyState == 0){
+						var number;//update for IE8, bug reported by I Komang Mardika (doumou arigatou!)
 						number = parseFloat(encodeURIComponent(document.getElementById("number").value));
 
 						httpObject.open("GET", "guwekatejugeape.php?number=" + number, true);
@@ -82,7 +83,7 @@
 					}else {
 						alert ("Cannot access server. Message = "+ httpObject.statusText);
 					}
-					}
+				}
 			}
 
 		</script>
