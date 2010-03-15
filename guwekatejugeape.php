@@ -1,5 +1,7 @@
 <?php
 
+header("Cache-Control: no-cache");//Internet Explorer
+
 $number = $_GET["number"];
 if (($number) === "NaN"){
 	exit("Simon said... number");

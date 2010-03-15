@@ -17,80 +17,43 @@
 			padding: 3px;
 		}
 	</style>
-		<script type="text/javascript" >
-			function handleEnterPressed(e){
-				var charCode;
-				if (e && e.which){
-					charCode = e.which;
-				}else if (window.event) {
-					e = window.event;
-					charCode = e.keyCode;
-				}
+		<script type="text/javascript" src="jquery-1.4.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#loadingAnimation')
+					.bind('ajaxStart', function () {
+						$(this).show();
+					})
+					.bind('ajaxComplete', function () {
+						$(this).hide();
+					})
+				
+				$("#number").keypress(function(e) {
+					if (!e) e = window.event;
+					if (e.keyCode == 13){
+						var number = parseFloat($('#number').val());
 
-				if (charCode == 13){//if enter pressed
-					document.getElementById('loadingAnimation').style.display = 'block';
-					document.getElementById('response').style.display = 'none';
-					process();
-				}
-			}
-			function createXmlHttpRequestObject() {
-				var httpObject;
+						$.ajax({
+							type: 'GET',
+							url: 'guwekatejugeape.php?number=' + number,
+							dataType: 'html',
+							success: function (html) {								
+								$('#response').html(html);
+							},
+							error: function (xhr, status, errorThrown) {
+								alert ('Oops, an error occured: ' + errorThrown)
+							}
 
-				if (window.ActiveXObject){
-					try {
-						return new ActiveXObject("Microsoft.XMLHTTP");
-					}catch (e){
-						httpObject = false;
+						})//end of .ajax()
 					}
-				}else {
-					try {
-						 return new XMLHttpRequest();
-					} catch (e){
-						httpObject = false;
-					}
-				}
-
-				if (!httpObject) {
-					alert("Failed to create XMLHttpObject!");
-					return null;
-				}else
-					return httpObject;
-			}
-
-			function process() {
-				httpObject = createXmlHttpRequestObject();
-				if (httpObject != null){
-					if (httpObject.readyState == 4 || httpObject.readyState == 0){
-						var number;//update for IE8, bug reported by I Komang Mardika (doumou arigatou!)
-						number = parseFloat(encodeURIComponent(document.getElementById("number").value));
-
-						httpObject.open("GET", "guwekatejugeape.php?number=" + number, true);
-						httpObject.onreadystatechange = handleServerResponse;
-
-						httpObject.send(null);
-					}
-				}
-
-			}
-
-			function handleServerResponse() {
-				if (httpObject.readyState == 4){
-					if (httpObject.status == 200){
-						words = httpObject.responseText;
-						document.getElementById("response").innerHTML = words;
-						document.getElementById("response").style.display = "block";
-						document.getElementById("loadingAnimation").style.display = "none";
-					}else {
-						alert ("Cannot access server. Message = "+ httpObject.statusText);
-					}
-				}
-			}
-
+				});				
+			})
+			
 		</script>
     </head>
     <body>
-	    Input the number and press Enter <input type="text" id="number" onkeypress="handleEnterPressed(event)" />
-	    	<div id="loadingAnimation" style="display:none" ><img src="animation.gif" /></div>
+	    Input the number and press Enter <input type="text" id="number" /><br />
+	    	<img id="loadingAnimation" alt="animation.gif" src="animation.gif" style="display:none"/>
 		<div id="response" />
     </body>
 </html>
