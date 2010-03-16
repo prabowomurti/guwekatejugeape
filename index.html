@@ -22,10 +22,12 @@
 			$(document).ready(function() {
 				$('#loadingAnimation')
 					.bind('ajaxStart', function () {
+						$('#response').hide();
 						$(this).show();
 					})
 					.bind('ajaxComplete', function () {
 						$(this).hide();
+						$('#response').show();
 					})
 				
 				$("#number").keypress(function(e) {
